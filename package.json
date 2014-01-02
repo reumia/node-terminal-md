@@ -1,0 +1,10 @@
+{
+  "name": "node-terminal-md",
+  "version": "0.1.0",
+  "devDependencies": {
+    "marked": "~0.3.0"
+  },
+  "dependencies": {
+    "marked": "~0.3.0"
+  }
+}
