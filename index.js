@@ -59,7 +59,9 @@ process.stdin.setEncoding('utf8');
 process.stdin.on('data', function(chunk) {
 
     if( chunk === '\n' ){
-        print_list();
+        if( current_screen === 'detail' ){
+            print_list();
+        }
         return;
     }else if( is_only_number(chunk) === false ){
         process.stdout.write('숫자만 입력하세요: \n');
@@ -68,7 +70,7 @@ process.stdin.on('data', function(chunk) {
 
     if( is_only_number(chunk) ){
         if( parseInt(chunk, 10) > files_arr.length + 1 ){
-            process.stdout.write('목록에 없는 글입니다. \n');
+            process.stdout.write('목록에 없는 번호입니다. \n');
             return;
         }
     }
