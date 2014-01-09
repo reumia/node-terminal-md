@@ -58,6 +58,10 @@ process.stdin.setEncoding('utf8');
 
 process.stdin.on('data', function(chunk) {
 
+    if( chunk.trim() === 'list' ){
+        print_list();
+    }
+
     if( chunk === '\n' ){
         if( current_screen === 'detail' ){
             print_list();
