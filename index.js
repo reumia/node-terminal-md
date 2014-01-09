@@ -16,6 +16,16 @@ function print_list(){
     });
 }
 
+/**
+ * 숫자만 있는지 검사한다.
+ * @param  string chunk
+ * @return Boolean 숫자면 true, 다른 거 섞여 있으면 false
+ */
+function is_only_number(chunk){
+    chunk = chunk.trim();
+    return (/[^0-9]/.test(chunk) === false);
+}
+
 print_list();
 
 process.stdin.resume();
@@ -23,15 +33,19 @@ process.stdin.setEncoding('utf8');
 
 process.stdin.on('data', function(chunk) {
 
-    if( /[0-9]+/.test(chunk) === false && chunk !== '\n' ){
-        process.stdout.write('글 번호를 입력하세요: \n');
+    if(chunk === '\n'){
+        print_list();
+        return;
+    }else if( is_only_number(chunk) === false ){
+        process.stdout.write('숫자만 입력하세요: \n');
         return;
     }
 
-    if(chunk === '\n'){
-        
-        print_list();
-        return;
+    if( is_only_number(chunk) ){
+        if( parseInt(chunk, 10) > files_arr.length + 1 ){
+            process.stdout.write('목록에 없는 글입니다. \n');
+            return;
+        }
     }
 
     var num = chunk - 1;
