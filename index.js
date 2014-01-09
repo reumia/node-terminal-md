@@ -3,6 +3,8 @@ var fs = require('fs');
 var files_arr;
 var current_screen = 'list';
 
+
+
 function print_list(){
     fs.readdir('docs/', function(err, files){
     
@@ -26,6 +28,29 @@ function is_only_number(chunk){
     return (/[^0-9]/.test(chunk) === false);
 }
 
+/**
+ * 선택된 파일의 내용을 출력한다.
+ * @param  string chunk
+ */
+function print_detail(chunk){
+    var num = chunk - 1;
+    fs.readFile('docs/' + files_arr[num], {
+        encoding: 'utf8'
+    }, function(err, data){
+        process.stdout.write(
+            '--------------------------------------------------------------\n' +
+            marked(data) +
+            '\n' +
+            '--------------------------------------------------------------\n' +
+            '엔터치면 목록이 나옵니다.\n'
+        );
+        current_screen = 'detail';
+    });
+}
+
+
+
+
 print_list();
 
 process.stdin.resume();
@@ -33,7 +58,7 @@ process.stdin.setEncoding('utf8');
 
 process.stdin.on('data', function(chunk) {
 
-    if(chunk === '\n'){
+    if( chunk === '\n' ){
         print_list();
         return;
     }else if( is_only_number(chunk) === false ){
@@ -48,23 +73,7 @@ process.stdin.on('data', function(chunk) {
         }
     }
 
-    var num = chunk - 1;
-
-    fs.readFile('docs/'+files_arr[num], 'utf8', function(err, data){
-        if(data === undefined){
-            console.log("번호를 잘못 입력했습니다. \n");
-            // print_list();
-        } else {
-            process.stdout.write(
-                '--------------------------------------------------------------\n' +
-                marked(data) +
-                '\n' +
-                '--------------------------------------------------------------\n' +
-                '엔터치면 목록이 나옵니다.\n'
-            );
-            current_screen = 'detail';
-        }
-    });
+    print_detail(chunk);
 
 });
 
