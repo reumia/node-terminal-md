@@ -1,16 +1,23 @@
 var marked = require('marked');
 var fs = require('fs');
-var files_arr;
+var files_arr = new Array();
 var current_screen = 'list';
 
 
 
 function print_list(){
     fs.readdir('docs/', function(err, files){
-    
-        files_arr = files;
+
         for( i=0; i < files.length; i++ ){
-            console.log( (i + 1) + '. ' + files[i] );
+            if( /(.*)md$/gm.test(files[i]) ){
+                 files_arr.push(files[i]);
+            }
+        }
+
+        //files_arr = files;
+
+        for( i=0; i < files_arr.length; i++ ){
+            console.log( (i + 1) + '. ' + files_arr[i] );
         }
         current_screen = 'list';
         console.log('\n글 번호를 입력하세요: ');
@@ -39,7 +46,7 @@ function print_detail(chunk){
     }, function(err, data){
         process.stdout.write(
             '--------------------------------------------------------------\n' +
-            marked(data) +
+            style(data) +
             '\n' +
             '--------------------------------------------------------------\n' +
             '엔터치면 목록이 나옵니다.\n'
@@ -48,6 +55,14 @@ function print_detail(chunk){
     });
 }
 
+function style(string){
+    var parsed = string
+        .replace(/#+$/gm, "")
+        .replace(/^#(?!#) *(.*)/gm, "\033[01;95m$1\033[m")
+        .replace(/^#{2}(?!#) *(.*)/gm, "\033[95m$1\033[m");
+
+    return parsed;
+}
 
 
 
