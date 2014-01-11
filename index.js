@@ -8,10 +8,12 @@ var current_screen = 'list';
 function print_list(){
     fs.readdir('docs/', function(err, files){
 
-        // 받아온 files 중에서 md 확장자로 끝나는 파일만 검색 후 files_arr에 추가
-        for( i=0; i < files.length; i++ ){
-            if( /(.*)md$/gm.test(files[i]) ){
-                 files_arr.push(files[i]);
+        if( files_arr.length === 0 ){
+            // 받아온 files 중에서 md 확장자로 끝나는 파일만 검색 후 files_arr에 추가
+            for( i=0; i < files.length; i++ ){
+                if( /(.*)md$/gm.test(files[i]) ){
+                     files_arr.push(files[i]);
+                }
             }
         }
 
