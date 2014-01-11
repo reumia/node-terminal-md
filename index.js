@@ -78,6 +78,10 @@ process.stdin.on('data', function(chunk) {
         print_list();
     }
 
+    if( chunk.trim() === 'q' ){
+        process.exit(1);
+    }
+
     if( chunk === '\n' ){
         if( current_screen === 'detail' ){
             print_list();
